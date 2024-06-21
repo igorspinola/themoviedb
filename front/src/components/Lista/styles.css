@@ -1,0 +1,6 @@
+.lista {
+  @apply flex flex-col gap-4 my-[12rem] pl-[11rem] pr-[6rem];
+}
+.container-cards {
+  @apply flex gap-4;
+}

@@ -1,0 +1,5 @@
+.cards {
+  @apply flex flex-col w-[150px] h-[320px] justify-between p-6 
+  bg-gradient-to-bl from-slate-500/30 to-slate-600/10 
+  border-2 border-y-red-600/50 border-x-rose-500/50 backdrop-blur-sm shadow-lg shadow-red-600/20 rounded-3xl;
+} 
