@@ -57,21 +57,6 @@ export default function Lista() {
   //  })
   //};
 
-  //useEffect(() => {
-  //  listaFilmes(Idioma);
-  //}, [Idioma]);
-
-  //useEffect(() => {
-  //  // Busca dados iniciais
-  //  listaFilmes();
-
-  //  // Configura intervalo para buscar dados
-  //  const interval = setInterval(listaFilmes, 1000); // Busca a cada 1 segundos
-
-  //  // Limpa o intervalo quando o componente é desmontado
-  //  return () => clearInterval(interval);
-  //}, []);
-
   useEffect(() => {
     listaFilmes();
   }, []);

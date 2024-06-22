@@ -15,6 +15,7 @@ model User {
   email String  @unique
   username  String @unique
   password  String
+  age  Int
   favorite_movies Movie[]
 }
 model Movie {
@@ -22,4 +23,8 @@ model Movie {
   user_id  Int
   user    User    @relation(fields: [user_id], references: [id])
   movie_id  Int
+  title String
+  vote_average String
+  original_language String
+  poster_path String
 }

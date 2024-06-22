@@ -34,35 +34,65 @@ app.get('/movie_by_genre', async (req: Request, res: Response) => {
   res.send(list.data)
 })
 
+app.get('/get_favorite_movies/:id', async (req: Request, res: Response) => {
+  const id = req.params.id
+  const movies = await prisma.movie.findMany({
+    where: {
+      user_id: parseInt(id),
+    },
+  })
+  res.send(movies)
+})
+
 app.post('/user', async (req: Request, res: Response) => {
   
   console.log(req.body)
-  const {username, email, password} = req.body
+  const {username, email, password, age} = req.body
 
   const user = await prisma.user.create({
     data: {
       username: username,
       email: email,
       password: password,
+      age: parseInt(age),
+      favorite_movies: {
+        create:[]
+      }
     },
   }) 
   console.log(user)
   res.send(user)
 })
 
-// app.post('/add_favorite', async (req: Request, res: Response) => {
-  
-//   console.log(req.body)
-//   const {username, movie_id} = req.body
+app.post('/add_favorite', async (req: Request, res: Response) => {
 
-//   const user = await prisma.user.update({
-//     data: {
-//       favorite_movies:
-//     },
-//   }) 
-//   console.log(user)
-//   res.send(user)
-// })
+  console.log(req.body)
+  const {user_id, movie_id, title, vote_average, original_language, poster_path } = req.body
+
+  const movie = await prisma.movie.create({
+    data: {
+      user_id: parseInt(user_id),
+      movie_id: parseInt(movie_id),
+      title: title,
+      vote_average: vote_average,
+      original_language: original_language,
+      poster_path: poster_path,
+    },
+  }) 
+  
+  // const user = await prisma.user.update({
+  //   data: {
+  //     favorite_movies: {
+  //       push: movie 
+  //     }
+  //   },
+  // }) 
+
+  res.send({
+    message: "movie added to favorites succesfully",
+    movie: movie
+  })
+})
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
