@@ -45,11 +45,18 @@ app.get('/movie_by_title', async (req: Request, res: Response) => {
   res.send(list.data)
 })
 
-app.get('/get_favorite_movies/:id', async (req: Request, res: Response) => {
-  const id = req.params.id
+app.get('/get_favorite_movies/:email', async (req: Request, res: Response) => {
+  const email = req.params.email
+  const findUser = await prisma.user.findUnique({
+    where: {
+      email: email
+    }
+  })
+  const id = findUser?.id
+
   const movies = await prisma.movie.findMany({
     where: {
-      user_id: parseInt(id),
+      user_id: id,
     },
   })
   res.send(movies)
