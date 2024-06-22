@@ -34,6 +34,17 @@ app.get('/movie_by_genre', async (req: Request, res: Response) => {
   res.send(list.data)
 })
 
+app.get('/movie_by_title', async (req: Request, res: Response) => {
+  console.log(req.query.title)
+  const title_string = String(req.query.title)
+  const title = title_string.split(" ").join("+")
+  console.log(title)
+  const url = `https://api.themoviedb.org/3/search/movie?&api_key=04c35731a5ee918f014970082a0088b1&query=${title}`
+  console.log(url)
+  const list = await axios.get(url)
+  res.send(list.data)
+})
+
 app.get('/get_favorite_movies/:id', async (req: Request, res: Response) => {
   const id = req.params.id
   const movies = await prisma.movie.findMany({
@@ -64,6 +75,28 @@ app.post('/user', async (req: Request, res: Response) => {
   res.send(user)
 })
 
+app.post('/login', async (req: Request, res: Response) => {
+  
+  console.log(req.body)
+  const {email, password} = req.body
+
+  const user = await prisma.user.findFirst({
+    where: {
+      email: email,
+      password: password,
+    },
+  }) 
+  console.log(user)
+  let message = ""
+  if(user == null) {
+    console.log("credenciais de login incorretas")
+    message = "credenciais de login incorretas"
+  } else {
+    message = "login realizado com sucesso"
+  }
+  res.send(message)
+})
+
 app.post('/add_favorite', async (req: Request, res: Response) => {
 
   console.log(req.body)
@@ -91,6 +124,31 @@ app.post('/add_favorite', async (req: Request, res: Response) => {
   res.send({
     message: "movie added to favorites succesfully",
     movie: movie
+  })
+})
+
+app.post('/remove_favorite', async (req: Request, res: Response) => {
+
+  console.log(req.body)
+  const {user_id, movie_id} = req.body
+  const findMovie = await prisma.movie.findFirst({
+    where: {
+      user_id: parseInt(user_id),
+      movie_id: parseInt(movie_id)
+    }
+  })
+
+  const id = findMovie?.id 
+
+  const removeMovie = await prisma.movie.delete({
+    where: {
+      id:id
+    },
+  })
+
+  res.send({
+    message: "movie removed from favorites succesfully",
+    movie: removeMovie
   })
 })
 
