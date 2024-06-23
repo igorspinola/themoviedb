@@ -70,9 +70,9 @@ app.post('/user', async (req: Request, res: Response) => {
   const user = await prisma.user.create({
     data: {
       username: username,
+      age: parseInt(age),
       email: email,
       password: password,
-      age: parseInt(age),
       favorite_movies: {
         create:[]
       }
