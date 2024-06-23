@@ -6,6 +6,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  text-overflow: ellipsis;
 }
 
 :root {
@@ -47,6 +48,26 @@ input {
   &:focus {
     cursor: inherit;
   }
+}
+
+h1, h2, h3, h4, h5, h6, p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+
+  @media (min-width: 768px) {
+    font-size: 1rem;
+  }
+}
+
+p {
+  font-size: 1.5rem;
+  font-weight: 400;
 }
 
 @layer utilities {

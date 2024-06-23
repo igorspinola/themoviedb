@@ -1,19 +1,12 @@
 import './styles.css';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useFiltro } from '@/contexts/FiltroContext';
 //-- COMPONENTS
 import SearchBar from '../SearchBar';
 import Cards from '../Cards';
 
 
-interface Filme {
-  id: number;
-  title: string;
-  poster_path: string; // Para movieList
-  posterPath: string;  // Para favoriteMovies
-}
-
-export default function Lista() {
+export default function Lista(ref: any) {
   const { Filmes } = useFiltro();
   
   return (
@@ -21,19 +14,21 @@ export default function Lista() {
       <SearchBar />
 
       <ul className='container-cards'>
-        {Filmes.map((item: any) => {
-            return (
+        {Filmes && Filmes.length > 0? (
+          Filmes.map((item: any) => (
               <li key={item.id}>
                 <Cards
+                  id={item.id}
                   poster={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
-                  titulo={item.title}
-                  // const dataLancamento = data.release_date;
-                  genero={item.genres}
+                  titulo={item.title} 
+                  ano={item.release_date}
                   idioma = {item.original_language}
                   nota={item.vote_average}
                 />
               </li>
-        )})}
+          ))) : (
+            <li> Nenhum item </li>
+          )}
       </ul>
 
     </section>

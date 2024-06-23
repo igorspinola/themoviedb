@@ -1,18 +1,20 @@
-"use client"
+"use client";
+
 import { URL_BACK } from "@/services/api";
 import axios from "axios";
-import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
-import { useUser } from "./UserContext";
+import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
+import { UserProvider, useUser } from "./UserContext";
 
 // Definindo o tipo do estado e das funções de controle
 interface FiltroContextType {
-  Idioma: any;
+  Idioma: string;
   Genero: number;
   Titulo: string;
-  Filmes: [];
-  filterIdioma: (e: any) => void;
-  filterGenero: (e: any) => void;
-  filterTitulo: (e: any) => void;
+  Filmes: any[];
+  filterIdioma: (e: string) => void;
+  filterGenero: (e: number) => void;
+  filterTitulo: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  filterFilmes: (e: any) => void;
 }
 
 // Estado inicial
@@ -21,84 +23,85 @@ const initialState: FiltroContextType = {
   Genero: 28,
   Titulo: "",
   Filmes: [],
-  filterIdioma: (e: any) => {},
-  filterGenero: (e: any) => {},
-  filterTitulo: (e: any) => {},
+  filterIdioma: () => {},
+  filterGenero: () => {},
+  filterTitulo: () => {},
+  filterFilmes: () => {},
 };
+
 interface FiltroProps {
   children: React.ReactNode;
 }
+
 // Criando o contexto
 const FiltroContext = createContext<FiltroContextType>(initialState);
 
 // Criando o provider
 export const FiltroProvider: React.FC<FiltroProps> = ({ children }) => {
   const { Email, Favoritos } = useUser();
-
+  
   const [Idioma, setIdioma] = useState("es");
   const [Genero, setGenero] = useState(28);
   const [Titulo, setTitulo] = useState("");
-  const [Filmes, setFilmes] = useState<[]>([]);
+  const [Filmes, setFilmes] = useState<any[]>([]);
 
-  const filterIdioma = (e: any) => {
-    setIdioma(e)
+  const filterIdioma = (e: string) => {
+    setIdioma(e);
   }
 
-  const filterGenero = (e: any) => {
+  const filterGenero = (e: number) => {
     setGenero(e);
   }
 
-  const filterTitulo = (e: any) => {
-    setTitulo(e.target.value)
+  const filterTitulo = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitulo(e.target.value);
   }
-   
+
+  const filterFilmes = (e: any) => {
+    setFilmes(e)
+  }
+
+  
+
   useEffect(() => {
-    if (Favoritos === true) {
-      axios.get(`${URL_BACK}/get_favorite_movies/${Email}`)
-      .then(response => {
-        setFilmes(response.data);
-        console.log('Movies retrieved successfully!');
+    if (Favoritos) {
+      console.log(Favoritos);
+      axios.get(`${URL_BACK}/favorite_movies/${Email}`)
+      .then(res => {
+        filterFilmes(res.data)
+        console.log('Filmes favoritos recuperados com sucesso!')
       })
-      .catch(error => {
-        console.error('There was an error retrieving the movies!', error);
-        console.log('Error retrieving movies.');
-      });
+      .catch(error => console.error('Erro ao recuperar filmes favoritos: ', error));
     } else if (Titulo !== "") {
       axios.get(`${URL_BACK}/movie_by_title`, {
         params: {
           title: Titulo
         }
       })
-      .then(response => {
-        setFilmes(response.data.results);
-        console.log('Movies retrieved successfully!');
+      .then(res => {
+        setFilmes(res.data.results)
+        console.log('Pesquisa realizada com sucesso!')
       })
-      .catch(error => {
-        console.error('There was an error retrieving the movies!', error);
-        console.log('Error retrieving movies.');
-      });
+      .catch(error => console.error('Erro ao realizar pesquisar: ', error))
     } else {
-      axios.get('http://localhost:3004/movie_by_genre', {
+      axios.get(`${URL_BACK}/movie_by_genre`, {
         params: {
           genre: Genero,
           language: Idioma
         }
       })
-      .then(response => {
-        setFilmes(response.data.results);
-        console.log('Movies retrieved successfully!');
+      .then(res => {
+        setFilmes(res.data.results)
+        console.log('Filmes recuperados com sucesso!')
       })
-      .catch(error => {
-        console.error('There was an error retrieving the movies!', error);
-        console.log('Error retrieving movies.');
-      });
+    .catch(error => console.error('Erro ao recuperar filmes: ', error))
     }
-  }, [Idioma, Genero, Titulo])
+  }, [Email,Favoritos, Idioma, Genero, Titulo]);
 
   return (
-    <FiltroContext.Provider value={{ Idioma, Genero, Titulo, Filmes, filterIdioma, filterGenero, filterTitulo}}>
-      {children}
-    </FiltroContext.Provider>
+      <FiltroContext.Provider value={{ Idioma, Genero, Titulo, Filmes, filterIdioma, filterGenero, filterTitulo, filterFilmes }}>
+        {children}
+      </FiltroContext.Provider>
   );
 };
 

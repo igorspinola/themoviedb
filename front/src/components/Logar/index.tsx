@@ -28,16 +28,13 @@ export default function Logar({className}: CadastroProps) {
     e.preventDefault();
     try {
       const response = await axios.post(`${URL_BACK}/login`, { 
-      email,
-      password,
+      email: email,
+      password: password,
       })
-
-      alert('Informações enviadas com sucesso!')
 
       if (response.data.status_code === 200) {
         filterEmail(email);
-        revalidatePath(`/user`);
-        redirect(`/user/${email}`)
+        toggleModalLogin();
       }
     } catch (error) {
       console.error('Erro ao enviar os dados: ', error) 
@@ -52,14 +49,14 @@ export default function Logar({className}: CadastroProps) {
         
         <form className='form-modal' onSubmit={fLogin} method="post">
 
-          <label htmlFor='email' className='col-span-7 form-label'>
+          <label htmlFor='email-login' className='col-span-7 form-label'>
             E-mail :
-            <input id='email' className='form-input' type='email' onChange={fFormulario(setEmail)}/>
+            <input id='email-login' className='form-input' type='email' required onChange={fFormulario(setEmail)}/>
           </label>
 
-          <label htmlFor='password' className='col-span-7 form-label'>
+          <label htmlFor='password-login' className='col-span-7 form-label'>
             Senha :
-            <input id='password' className='form-input' type='password' onChange={fFormulario(setPassword)}/>
+            <input id='password-login' className='form-input' type='password' required onChange={fFormulario(setPassword)}/>
           </label>
 
           <div className='botoes-form'>

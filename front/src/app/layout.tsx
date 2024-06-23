@@ -3,8 +3,7 @@ import type { Metadata } from "next";
 import { FiltroProvider } from "@/contexts/FiltroContext";
 import { ModalProvider } from "@/contexts/ModalContext";
 import { Poppins } from "next/font/google";
-import Generos from "@/components/Generos";
-import Idiomas from "@/components/Idiomas";
+import { UserProvider } from "@/contexts/UserContext";
 
 const poppins = Poppins({weight:  ["400", "500", "600", "700", "800", "900"], subsets: ["latin-ext"]});
 
@@ -22,15 +21,15 @@ export default function RootLayout({
     <html lang="pt-br">
       <body className={poppins.className}>
 
-        <h2 className="fixed m-6 w-min h-min font-extrabold text-2xl">
-          Cine<span className="text-red-700">Glota</span>
-        </h2>
+        <UserProvider>
+          <FiltroProvider>
+            <ModalProvider>
 
-        <FiltroProvider>
-          <ModalProvider>
-            {children}
-          </ModalProvider>
-        </FiltroProvider>
+              {children}
+              
+            </ModalProvider>
+          </FiltroProvider>
+        </UserProvider>
       
       </body>
     </html>

@@ -1,23 +1,27 @@
+import '../../app/globals.css';
 import './styles.css';
 import React from 'react';
 import Image from 'next/image';
+import Text from '../Text';
 //-- ASSETS
 import { FaRegHeart } from "react-icons/fa";
 import espanhol from '../../assets/espanhol.svg';
 import italiano from '../../assets/italiano.svg';
 import frances from '../../assets/frances.svg';
 import alemao from '../../assets/alemao.svg';
+import FavButton from '../FavButton';
 
 interface CdProps {
+  id: number;
   poster?: any;
   titulo: string;
-  genero?: [];
-  idioma?: any;
-  nota?: number;
+  ano: any;
+  idioma: string;
+  nota: number;
 }
 
 
-export default function Cards({ poster, titulo, genero, idioma, nota }: CdProps) {
+export default function Cards({ id, poster, titulo, ano, idioma, nota }: CdProps) {
   let lingua;
   switch (idioma) {
     case "es":
@@ -32,32 +36,34 @@ export default function Cards({ poster, titulo, genero, idioma, nota }: CdProps)
     case "de":
       lingua = alemao;
       break;
-    default:
-      lingua = espanhol;
   }
+
+  const ano_corrigido = ano.slice(0, 4)
+  const nota_corrigida = nota.toFixed(1)
+
 
   return (
     <div className='cards'>
-      <div>
-        <Image src={poster} alt={titulo} width={100} height={100} layout="responsive" className='w-full h-auto bg-cover' />
-        <h2 className='self-center font-bold my-1 truncate'>{titulo}</h2>
+      
+      <div >
+        <Image src={poster} alt={titulo} width={300} height={300} className='mb-4' />
+        <Text as='h2'>{titulo}</Text>
       </div>
 
       <div>
-        <div className='flex justify-between text-xs'>
-          <p>{genero}</p>
+        <div className='flex justify-between'>
+          <Text as='p'>{ano_corrigido}</Text>
           <Image src={lingua} alt='.' width={20} height={20} />
         </div>
 
-        <p>{nota}</p>
+        <Text as='p'>{nota_corrigida}</Text>
 
         <div className='flex justify-between text-xs'>
-          <button>Detalhes</button>
-          <button> <FaRegHeart /> </button>
+          <button>Detalhes...</button>
+          <FavButton movieId={id} title={titulo} voteAverage={nota} releaseDate={ano} originalLanguage={idioma} posterPath={poster} />
         </div>
       </div>
 
     </div>
   )
 }
-// priority={index === 0}

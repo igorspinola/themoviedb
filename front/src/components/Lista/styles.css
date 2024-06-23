@@ -1,6 +1,15 @@
 .lista {
-  @apply flex flex-col gap-4 my-[12rem] pl-[11rem] pr-[6rem];
+  @apply flex flex-col content-center gap-8 py-[12rem] -z-10;
+
+  @media (min-width: 768px) {
+    padding: 12rem 6rem 12rem 11rem;
+  }
 }
 .container-cards {
-  @apply flex flex-wrap gap-8;
+  @apply flex flex-col items-center gap-8;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
 }

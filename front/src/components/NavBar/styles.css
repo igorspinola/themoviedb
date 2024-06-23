@@ -1,11 +1,22 @@
 .navbar {
-  @apply flex flex-col fixed top-[4.5rem] left-4 h-fit gap-2 text-sm font-bold;
+  @apply flex flex-col content-center fixed top-[4.5rem] w-[90%] h-fit mx-[4%] gap-[0.5rem] text-sm font-bold;
+
+  @media (min-width: 1024px) {
+    left: 1rem;
+    width: fix-content;
+    margin: 0;
+  }
 }
 
-.botao-login {
-  @apply w-[9rem] py-1 bg-gradient-to-br from-rose-500/50 to-red-600/50 shadow-md shadow-red-600/50 rounded-full text-center;
+.botao-login, .botao-signup {
+  @apply w-full w-full px-4 py-1 shadow-md shadow-red-600/50 rounded-full text-center;
+  @media (min-width: 1024px) {
+    width: 9rem;
+  }
 }
-
-.botao-signup {
-  @apply w-[9rem] py-1 border-2 border-y-red-600/50 border-x-rose-500/50 shadow-md shadow-red-600/50 rounded-full text-center text-red-700;
-}
+  .botao-login {
+    @apply bg-gradient-to-br from-rose-500/50 to-red-600/50;
+  }
+  .botao-signup {
+    @apply border-2 border-y-red-600/50 border-x-rose-500/50 text-center;
+  }

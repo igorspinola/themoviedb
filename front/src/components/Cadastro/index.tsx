@@ -28,10 +28,10 @@ export default function Cadastro({className}: CadastroProps) {
     e.preventDefault();
     try {
       await axios.post(`${URL_BACK}/user`, {
-          username,
-          email,
-          password,
-          age
+          username: username,
+          email: email,
+          password: password,
+          age: age
       })
       alert('Usuário criado com sucesso!');
       toggleModalSignup();
@@ -49,21 +49,21 @@ export default function Cadastro({className}: CadastroProps) {
         <form className='form-modal' onSubmit={fCriar} method="post">
           <label htmlFor='username' className='form-label col-span-5'>
             Username :
-            <input id='username' className='form-input' type='text' onChange={fFormulario(setUsername)}/>
+            <input id='username' className='form-input' type='text' required onChange={fFormulario(setUsername)}/>
           </label>
 
           <label htmlFor='age' className='col-span-2 form-label'>
             Idade :
-            <input id='age' className='form-input' type='number' onChange={fFormulario(setAge)}/>
+            <input id='age' className='form-input' type='number' required onChange={fFormulario(setAge)}/>
           </label>
 
           <label htmlFor='email' className='col-span-7 form-label'>
             E-mail :
-            <input id='email' className='form-input' type='email' onChange={fFormulario(setEmail)}/>
+            <input id='email' className='form-input' type='email' required onChange={fFormulario(setEmail)}/>
           </label>
           <label htmlFor='password' className='col-span-7 form-label'>
             Senha :
-            <input id='password' className='form-input' type='password' onChange={fFormulario(setPassword)}/>
+            <input id='password' className='form-input' type='password' required onChange={fFormulario(setPassword)}/>
           </label>
 
           <div className='botoes-form'>

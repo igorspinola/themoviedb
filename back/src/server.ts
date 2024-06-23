@@ -45,21 +45,22 @@ app.get('/movie_by_title', async (req: Request, res: Response) => {
   res.send(list.data)
 })
 
-app.get('/get_favorite_movies/:email', async (req: Request, res: Response) => {
-  const email = req.params.email
+app.get('/favorite_movies/:email', async (req: Request, res: Response) => {
+  const { email } = req.params;
   const findUser = await prisma.user.findUnique({
     where: {
       email: email
     }
   })
-  const id = findUser?.id
-
-  const movies = await prisma.movie.findMany({
-    where: {
-      user_id: id,
-    },
-  })
-  res.send(movies)
+  
+  if (findUser) {
+    const movies = await prisma.movie.findMany({
+      where: {
+        user_id: findUser.id
+      },
+    })
+    res.send(movies)
+  }
 })
 
 app.post('/user', async (req: Request, res: Response) => {
@@ -95,7 +96,7 @@ app.post('/login', async (req: Request, res: Response) => {
   }) 
   console.log(user)
   let message = ""
-  let status_code = 400
+  let status_code
   if(user == null) {
     console.log("credenciais de login incorretas")
     message = "credenciais de login incorretas"
@@ -115,25 +116,30 @@ app.post('/login', async (req: Request, res: Response) => {
 app.post('/add_favorite', async (req: Request, res: Response) => {
 
   console.log(req.body)
-  const { email, movie_id, title, vote_average, original_language, poster_path } = req.body
-
+  const { email, movie_id, title, vote_average, release_date, original_language, poster_path } = req.body
 
   const findUser = await prisma.user.findUnique({
     where: {
       email: email
     }
   })
-  const user_id = findUser?.id == undefined ? 0 : findUser.id  
-  const movie = await prisma.movie.create({
-    data: {
-      user_id: user_id,
-      movie_id: parseInt(movie_id),
-      title: title,
-      vote_average: vote_average,
-      original_language: original_language,
-      poster_path: poster_path,
-    },
-  }) 
+
+  if (findUser) {
+    const user_id = findUser.id;
+    await prisma.movie.create({
+      data: {
+        user_id: user_id,
+        movie_id: parseInt(movie_id),
+        title: title,
+        vote_average: vote_average,
+        original_language: original_language,
+        poster_path: poster_path,
+      },
+    });
+    return res.send({
+      message: "movie added to favorites succesfully"
+    })
+  }
   
   // const user = await prisma.user.update({
   //   data: {
@@ -142,11 +148,6 @@ app.post('/add_favorite', async (req: Request, res: Response) => {
   //     }
   //   },
   // }) 
-
-  res.send({
-    message: "movie added to favorites succesfully",
-    movie: movie
-  })
 })
 
 app.post('/remove_favorite', async (req: Request, res: Response) => {

@@ -2,21 +2,22 @@
 import { URL_BACK } from "@/services/api";
 import axios from "axios";
 import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { useFiltro } from "./FiltroContext";
 
 // Definindo o tipo do estado e das funções de controle
 interface UserContextType {
-  Email: any;
+  Email: string | null;
   Favoritos: boolean;
   filterEmail: (e: any) => void;
-  filterFavoritos: (e: any) => void
+  filterFavoritos: () => void
 }
 
 // Estado inicial
 const initialState: UserContextType = {
-  Email: "es",
+  Email: null,
   Favoritos: false,
   filterEmail: (e: any) => {},
-  filterFavoritos: (e: any) => {}
+  filterFavoritos: () => {}
 };
 interface UserProps {
   children: React.ReactNode;
@@ -26,9 +27,9 @@ const UserContext = createContext<UserContextType>(initialState);
 
 // Criando o provider
 export const UserProvider: React.FC<UserProps> = ({ children }) => {
-  //const [Email, setEmail] = useState(TMDB_LANGS);
-  const [Email, setEmail] = useState("");
-  const [Favoritos, setFavoritos] = useState(true);
+  const { filterFilmes, Genero, Idioma } = useFiltro();
+  const [Email, setEmail] = useState(null);
+  const [Favoritos, setFavoritos] = useState(false);
 
   const filterEmail = (e: any) => {
     setEmail(e)
