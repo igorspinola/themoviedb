@@ -40,7 +40,7 @@ export default function Cards({ poster, titulo, genero, idioma, nota }: CdProps)
     <div className='cards'>
       <div>
         <Image src={poster} alt={titulo} width={100} height={100} layout="responsive" className='w-full h-auto bg-cover' />
-        <h2 className='self-center font-bold my-1'>{titulo}</h2>
+        <h2 className='self-center font-bold my-1 truncate'>{titulo}</h2>
       </div>
 
       <div>

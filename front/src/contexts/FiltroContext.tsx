@@ -1,5 +1,4 @@
 "use client"
-import { TMDB_LANGS } from "@/services/api";
 import React, { createContext, useContext, useState } from "react";
 
 // Definindo o tipo do estado e das funções de controle
@@ -12,7 +11,7 @@ interface FiltroContextType {
 
 // Estado inicial
 const initialState: FiltroContextType = {
-  Idioma: "en",
+  Idioma: "es",
   Genero: 28,
   filterIdioma: (e: any) => {},
   filterGenero: (e: any) => {}
@@ -26,13 +25,12 @@ const FiltroContext = createContext<FiltroContextType>(initialState);
 // Criando o provider
 export const FiltroProvider: React.FC<FiltroProps> = ({ children }) => {
   //const [Idioma, setIdioma] = useState(TMDB_LANGS);
-  const [Idioma, setIdioma] = useState("en");
+  const [Idioma, setIdioma] = useState("es");
   const [Genero, setGenero] = useState(28);
 
   const filterIdioma = (e: any) => {
     setIdioma(e)
     console.log(e)
-    console.log(Idioma)
   };
   const filterGenero = (e: any) => {
     setGenero(e.target.value);

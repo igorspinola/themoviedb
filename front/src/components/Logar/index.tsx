@@ -3,6 +3,8 @@ import './styles.css';
 import React, { useState } from 'react';
 import clsx from 'clsx';
 import { useModal } from '@/contexts/ModalContext';
+import { URL_BACK } from '@/services/api';
+import axios from 'axios';
 
 interface CadastroProps {
   className?: string;
@@ -10,27 +12,25 @@ interface CadastroProps {
 //-- FUNCTION
 export default function Logar({className}: CadastroProps) {
   const { toggleModalLogin } = useModal();
-  const [nome, setNome] = useState<string>('');
   const [email, setEmail] = useState<string>('');
-  const [senha, setSenha] = useState<string>('');
-  const [idade, setIdade] = useState<number>(0);
-  const [cidade, setCidade] = useState<string>('');
-  const [estado, setEstado] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
 
   const fFormulario = (setter: React.Dispatch<React.SetStateAction<any>>) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setter(e.target.value);
   };
 
-  // const fCriar = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await criarUsuario({ email, senha, nome, idade, cidade, estado });
-  //     alert('Usuario criado com sucesso!');
-  //     toggleModalUm();
-  //   } catch (error) {
-  //     console.error('Erro ao enviar os dados: ', error);
-  //   }
-  // };
+  const fLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await axios.post(`${URL_BACK}/login`, { 
+      email,
+      password,
+    })
+    .then(() => {
+      alert('Informações enviadas com sucesso!'),
+      toggleModalLogin();
+    })
+    .catch((error) => console.error('Erro ao enviar os dados: ', error));
+  };
 
   return (
 
@@ -38,20 +38,20 @@ export default function Logar({className}: CadastroProps) {
       <div className='container-modal'>
         <h2 className='titulo-modal'>Log in</h2>
         
-        <form className='form-modal' method="post">
+        <form className='form-modal' onSubmit={fLogin} method="post">
 
           <label htmlFor='email' className='col-span-7 form-label'>
             E-mail :
             <input id='email' className='form-input'onChange={fFormulario(setEmail)}/>
           </label>
 
-          <label htmlFor='senha' className='col-span-7 form-label'>
+          <label htmlFor='password' className='col-span-7 form-label'>
             Senha :
-            <input id='senha' className='form-input' onChange={fFormulario(setSenha)}/>
+            <input id='password' className='form-input' onChange={fFormulario(setPassword)}/>
           </label>
 
           <div className='botoes-form'>
-            <button className='botao-enviar'>Log in</button>
+            <button className='botao-enviar' type='submit'>Log in</button>
             <button className='botao-cancelar' onClick={toggleModalLogin}>Cancelar</button>
           </div>
 

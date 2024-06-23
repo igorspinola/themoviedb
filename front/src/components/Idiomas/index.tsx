@@ -1,14 +1,14 @@
+"use client"
 import '@/app/globals.css';
 import './styles.css';
 import React from 'react';
 import Image from 'next/image';
-import { useFiltro } from '@/contexts/FiltroContext';
+import { useFiltro } from '../../contexts/FiltroContext';
 //-- ASSETS
 import espanhol from '@/assets/espanhol.svg';
 import italiano from '@/assets/italiano.svg';
 import frances from '@/assets/frances.svg';
 import alemao from '@/assets/alemao.svg';
-import { TMDB_DE, TMDB_ES, TMDB_FR, TMDB_IT } from '@/services/api';
 
 export default function Idiomas() {
   const { filterIdioma } = useFiltro();
@@ -16,7 +16,7 @@ export default function Idiomas() {
   return (
     <form id='movie-language'>
 
-        <input id='spanish' name='language' value={TMDB_ES} type="radio" defaultChecked onClick={() => filterIdioma(TMDB_ES)} />
+        <input id='spanish' name='language' type="radio" defaultChecked onClick={() => filterIdioma("es")} />
         <label htmlFor='spanish' className="spanish">
           <h2>Espanhol</h2>
           <span>
@@ -24,7 +24,7 @@ export default function Idiomas() {
           </span>
         </label>
       
-        <input id='italian' name='language' value={TMDB_IT} type="radio" onClick={() => filterIdioma(TMDB_IT)}/>
+        <input id='italian' name='language' type="radio" onClick={() => filterIdioma("it")}/>
         <label htmlFor='italian' className="italian">
           <h2>Italiano</h2>
           <span>
@@ -32,7 +32,7 @@ export default function Idiomas() {
           </span>
         </label>
 
-        <input id='french' name='language' value={TMDB_FR} type="radio" onClick={ () => filterIdioma(TMDB_FR) }/>
+        <input id='french' name='language' type="radio" onClick={ () => filterIdioma("fr") }/>
         <label htmlFor='french' className="french">
           <h2>Francês</h2>
           <span>
@@ -40,7 +40,7 @@ export default function Idiomas() {
           </span>
         </label>   
 
-        <input id='german' name='language' value={TMDB_DE} type="radio" onClick={() => filterIdioma(TMDB_DE) }/>
+        <input id='german' name='language' type="radio" onClick={() => filterIdioma("de") }/>
         <label htmlFor='german' className="german">
           <h2>Alemão</h2>
           <span>
