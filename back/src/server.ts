@@ -107,11 +107,18 @@ app.post('/login', async (req: Request, res: Response) => {
 app.post('/add_favorite', async (req: Request, res: Response) => {
 
   console.log(req.body)
-  const { user_id, movie_id, title, vote_average, original_language, poster_path } = req.body
+  const { email, movie_id, title, vote_average, original_language, poster_path } = req.body
 
+
+  const findUser = await prisma.user.findUnique({
+    where: {
+      email: email
+    }
+  })
+  const user_id = findUser?.id == undefined ? 0 : findUser.id  
   const movie = await prisma.movie.create({
     data: {
-      user_id: parseInt(user_id),
+      user_id: user_id,
       movie_id: parseInt(movie_id),
       title: title,
       vote_average: vote_average,
@@ -137,10 +144,19 @@ app.post('/add_favorite', async (req: Request, res: Response) => {
 app.post('/remove_favorite', async (req: Request, res: Response) => {
 
   console.log(req.body)
-  const {user_id, movie_id} = req.body
+  const {email, movie_id} = req.body
+
+
+  const findUser = await prisma.user.findUnique({
+    where: {
+      email: email
+    }
+  })
+  const user_id = findUser?.id == undefined ? 0 : findUser.id  
+
   const findMovie = await prisma.movie.findFirst({
     where: {
-      user_id: parseInt(user_id),
+      user_id: user_id,
       movie_id: parseInt(movie_id)
     }
   })
