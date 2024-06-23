@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import { useModal } from '@/contexts/ModalContext';
 import { URL_BACK } from '@/services/api';
 import axios from 'axios';
+import { redirect } from 'next/dist/server/api-utils';
 
 interface CadastroProps {
   className?: string;
@@ -21,15 +22,20 @@ export default function Logar({className}: CadastroProps) {
 
   const fLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    await axios.post(`${URL_BACK}/login`, { 
+    try {
+      const response = await axios.post(`${URL_BACK}/login`, { 
       email,
       password,
-    })
-    .then(() => {
-      alert('Informações enviadas com sucesso!'),
-      toggleModalLogin();
-    })
-    .catch((error) => console.error('Erro ao enviar os dados: ', error));
+      })
+
+      alert('Informações enviadas com sucesso!')
+
+      if (response.data.status_code === 200) {
+        console.log('Login realizado com sucesso!')
+      }
+    } catch (error) {
+      console.error('Erro ao enviar os dados: ', error) 
+    };
   };
 
   return (
@@ -42,12 +48,12 @@ export default function Logar({className}: CadastroProps) {
 
           <label htmlFor='email' className='col-span-7 form-label'>
             E-mail :
-            <input id='email' className='form-input'onChange={fFormulario(setEmail)}/>
+            <input id='email' className='form-input' type='email' onChange={fFormulario(setEmail)}/>
           </label>
 
           <label htmlFor='password' className='col-span-7 form-label'>
             Senha :
-            <input id='password' className='form-input' onChange={fFormulario(setPassword)}/>
+            <input id='password' className='form-input' type='password' onChange={fFormulario(setPassword)}/>
           </label>
 
           <div className='botoes-form'>

@@ -21,21 +21,23 @@ export default function Cadastro({className}: CadastroProps) {
 
   const fFormulario = (setter: React.Dispatch<React.SetStateAction<any>>) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setter(e.target.value);
+    console.log(e.target.value);
   };
 
   const fCriar = async (e: React.FormEvent) => {
     e.preventDefault();
-    await axios.post(`${URL_BACK}/user`, {
+    try {
+      await axios.post(`${URL_BACK}/user`, {
           username,
           email,
           password,
           age
-    })
-    .then(() => {
+      })
       alert('Usuário criado com sucesso!');
       toggleModalSignup();
-    })
-    .catch((error) => console.error('Erro ao enviar os dados: ', error));
+    } catch (error) {
+      console.error('Erro ao enviar os dados: ', error)
+    };
   };
 
   return (
@@ -47,21 +49,21 @@ export default function Cadastro({className}: CadastroProps) {
         <form className='form-modal' onSubmit={fCriar} method="post">
           <label htmlFor='username' className='form-label col-span-5'>
             Username :
-            <input id='username' className='form-input' onChange={fFormulario(setUsername)}/>
+            <input id='username' className='form-input' type='text' onChange={fFormulario(setUsername)}/>
           </label>
 
           <label htmlFor='age' className='col-span-2 form-label'>
             Idade :
-            <input id='age' className='form-input' onChange={fFormulario(setAge)}/>
+            <input id='age' className='form-input' type='number' onChange={fFormulario(setAge)}/>
           </label>
 
           <label htmlFor='email' className='col-span-7 form-label'>
             E-mail :
-            <input id='email' className='form-input'onChange={fFormulario(setEmail)}/>
+            <input id='email' className='form-input' type='email' onChange={fFormulario(setEmail)}/>
           </label>
           <label htmlFor='password' className='col-span-7 form-label'>
             Senha :
-            <input id='password' className='form-input' onChange={fFormulario(setPassword)}/>
+            <input id='password' className='form-input' type='password' onChange={fFormulario(setPassword)}/>
           </label>
 
           <div className='botoes-form'>

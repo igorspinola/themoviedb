@@ -21,29 +21,28 @@ interface Filme {
 }
 
 export default function Lista() {
-  const { Idioma, Genero } = useFiltro();
-  const [filmes, setFilmes] = useState<Filme[]>([]);
+  const { Idioma, Genero, Filmes } = useFiltro();
 
-  const listaFilmes = async () => {
-    try {
-      console.log("Genero:")
-      console.log(Genero)
-      console.log("Idioma:")
-      console.log(Idioma)
-      console.log("URL:")
-      const  url = `http://localhost:3004/movie_by_genre?genre=${Genero}&language=${Idioma}`
-      const data = await axios.get(url);
-      console.log(data.data)
-      console.log(url)
-      setFilmes(data.data.results);
-    } 
-    catch (error) {
-      const  url = `http://localhost:3004/movie_by_genre?genre=28&language=fr`
-      const data = await axios.get(url);
-      setFilmes(data.data.results);
-      console.error('Valor padrão setado, erro ao obter filmes:', error);
-    }
-  }
+  // const listaFilmes = async () => {
+  //   try {
+  //     console.log("Genero:")
+  //     console.log(Genero)
+  //     console.log("Idioma:")
+  //     console.log(Idioma)
+  //     console.log("URL:")
+  //     const  url = `http://localhost:3004/movie_by_genre?genre=${Genero}&language=${Idioma}`
+  //     const data = await axios.get(url);
+  //     console.log(data.data)
+  //     console.log(url)
+  //     setFilmes(data.data.results);
+  //   } 
+  //   catch (error) {
+  //     const  url = `http://localhost:3004/movie_by_genre?genre=28&language=fr`
+  //     const data = await axios.get(url);
+  //     setFilmes(data.data.results);
+  //     console.error('Valor padrão setado, erro ao obter filmes:', error);
+  //   }
+  // }
 
   //const listaFilmes = (url: any) => {
   //  axios.get(url)
@@ -57,16 +56,16 @@ export default function Lista() {
   //  })
   //};
 
-  useEffect(() => {
-    listaFilmes();
-  }, []);
+  // useEffect(() => {
+  //   listaFilmes();
+  // }, []);
   
   return (
     <section className='lista'>
       <SearchBar />
 
       <ul className='container-cards'>
-        {filmes.map((item: any) => {
+        {Filmes.map((item: any) => {
             return (
               <li key={item.id}>
                 <Cards

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const URL_BACK = `https://localhost:3004`;
+export const URL_BACK = `http://localhost:3004`;
 
 export const URL_TMDB = `https://api.themoviedb.org`;
 export const TMDB_KEY = `e68628f5ff1c3314cd74c0ddba7a5819`;
