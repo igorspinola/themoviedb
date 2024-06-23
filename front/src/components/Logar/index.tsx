@@ -5,7 +5,9 @@ import clsx from 'clsx';
 import { useModal } from '@/contexts/ModalContext';
 import { URL_BACK } from '@/services/api';
 import axios from 'axios';
-import { redirect } from 'next/dist/server/api-utils';
+import { redirect } from 'next/navigation';
+import { useUser } from '@/contexts/UserContext';
+import { revalidatePath } from 'next/cache';
 
 interface CadastroProps {
   className?: string;
@@ -13,6 +15,8 @@ interface CadastroProps {
 //-- FUNCTION
 export default function Logar({className}: CadastroProps) {
   const { toggleModalLogin } = useModal();
+  const { filterEmail } = useUser();
+
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
@@ -31,7 +35,9 @@ export default function Logar({className}: CadastroProps) {
       alert('Informações enviadas com sucesso!')
 
       if (response.data.status_code === 200) {
-        console.log('Login realizado com sucesso!')
+        filterEmail(email);
+        revalidatePath(`/user`);
+        redirect(`/user/${email}`)
       }
     } catch (error) {
       console.error('Erro ao enviar os dados: ', error) 

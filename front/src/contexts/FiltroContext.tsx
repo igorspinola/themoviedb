@@ -2,6 +2,7 @@
 import { URL_BACK } from "@/services/api";
 import axios from "axios";
 import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { useUser } from "./UserContext";
 
 // Definindo o tipo do estado e das funções de controle
 interface FiltroContextType {
@@ -32,7 +33,8 @@ const FiltroContext = createContext<FiltroContextType>(initialState);
 
 // Criando o provider
 export const FiltroProvider: React.FC<FiltroProps> = ({ children }) => {
-  //const [Idioma, setIdioma] = useState(TMDB_LANGS);
+  const { Email, Favoritos } = useUser();
+
   const [Idioma, setIdioma] = useState("es");
   const [Genero, setGenero] = useState(28);
   const [Titulo, setTitulo] = useState("");
@@ -51,7 +53,17 @@ export const FiltroProvider: React.FC<FiltroProps> = ({ children }) => {
   }
    
   useEffect(() => {
-    if (Titulo !== "") {
+    if (Favoritos === true) {
+      axios.get(`${URL_BACK}/get_favorite_movies/${Email}`)
+      .then(response => {
+        setFilmes(response.data);
+        console.log('Movies retrieved successfully!');
+      })
+      .catch(error => {
+        console.error('There was an error retrieving the movies!', error);
+        console.log('Error retrieving movies.');
+      });
+    } else if (Titulo !== "") {
       axios.get(`${URL_BACK}/movie_by_title`, {
         params: {
           title: Titulo

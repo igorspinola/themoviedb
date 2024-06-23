@@ -107,7 +107,7 @@ app.post('/login', async (req: Request, res: Response) => {
 app.post('/add_favorite', async (req: Request, res: Response) => {
 
   console.log(req.body)
-  const {user_id, movie_id, title, vote_average, original_language, poster_path } = req.body
+  const { user_id, movie_id, title, vote_average, original_language, poster_path } = req.body
 
   const movie = await prisma.movie.create({
     data: {
