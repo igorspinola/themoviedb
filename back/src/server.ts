@@ -95,13 +95,21 @@ app.post('/login', async (req: Request, res: Response) => {
   }) 
   console.log(user)
   let message = ""
+  let status_code = 400
   if(user == null) {
     console.log("credenciais de login incorretas")
     message = "credenciais de login incorretas"
+    status_code = 400
   } else {
     message = "login realizado com sucesso"
+    status_code = 200
   }
-  res.send(message)
+  res.send(
+    {
+      message: message,
+      status_code: status_code
+    }
+  )
 })
 
 app.post('/add_favorite', async (req: Request, res: Response) => {
