@@ -58,7 +58,7 @@ export default function Logar({className}: CadastroProps) {
 
           <div className='botoes-form'>
             <button className='botao-enviar' type='submit'>Log in</button>
-            <button className='botao-cancelar' onClick={toggleModalLogin}>Cancelar</button>
+            <button className='botao-cancelar' type='button' onClick={toggleModalLogin}>Cancelar</button>
           </div>
 
         </form>

@@ -68,7 +68,7 @@ export default function Cadastro({className}: CadastroProps) {
 
           <div className='botoes-form'>
             <button className='botao-enviar' type='submit'>Sign up</button>
-            <button className='botao-cancelar' onClick={toggleModalSignup}>Cancelar</button>
+            <button className='botao-cancelar' type='button' onClick={toggleModalSignup}>Cancelar</button>
           </div>
         </form>
       
