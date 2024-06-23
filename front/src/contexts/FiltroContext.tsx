@@ -7,18 +7,22 @@ import React, { createContext, useCallback, useContext, useEffect, useState } fr
 interface FiltroContextType {
   Idioma: any;
   Genero: number;
+  Titulo: string;
   Filmes: [];
   filterIdioma: (e: any) => void;
   filterGenero: (e: any) => void;
+  filterTitulo: (e: any) => void;
 }
 
 // Estado inicial
 const initialState: FiltroContextType = {
   Idioma: "es",
   Genero: 28,
+  Titulo: "",
   Filmes: [],
   filterIdioma: (e: any) => {},
-  filterGenero: (e: any) => {}
+  filterGenero: (e: any) => {},
+  filterTitulo: (e: any) => {},
 };
 interface FiltroProps {
   children: React.ReactNode;
@@ -31,6 +35,7 @@ export const FiltroProvider: React.FC<FiltroProps> = ({ children }) => {
   //const [Idioma, setIdioma] = useState(TMDB_LANGS);
   const [Idioma, setIdioma] = useState("es");
   const [Genero, setGenero] = useState(28);
+  const [Titulo, setTitulo] = useState("");
   const [Filmes, setFilmes] = useState<[]>([]);
 
   const filterIdioma = (e: any) => {
@@ -40,26 +45,46 @@ export const FiltroProvider: React.FC<FiltroProps> = ({ children }) => {
   const filterGenero = (e: any) => {
     setGenero(e);
   }
-  
+
+  const filterTitulo = (e: any) => {
+    setTitulo(e.target.value)
+  }
+   
   useEffect(() => {
-    axios.get('http://localhost:3004/movie_by_genre', {
-      params: {
-        genre: Genero,
-        language: Idioma
-      }
-    })
-    .then(response => {
-      setFilmes(response.data.results);
-      console.log('Movies retrieved successfully!');
-    })
-    .catch(error => {
-      console.error('There was an error retrieving the movies!', error);
-      console.log('Error retrieving movies.');
-    });
-  }, [Genero, Idioma])
+    if (Titulo !== "") {
+      axios.get(`${URL_BACK}/movie_by_title`, {
+        params: {
+          title: Titulo
+        }
+      })
+      .then(response => {
+        setFilmes(response.data.results);
+        console.log('Movies retrieved successfully!');
+      })
+      .catch(error => {
+        console.error('There was an error retrieving the movies!', error);
+        console.log('Error retrieving movies.');
+      });
+    } else {
+      axios.get('http://localhost:3004/movie_by_genre', {
+        params: {
+          genre: Genero,
+          language: Idioma
+        }
+      })
+      .then(response => {
+        setFilmes(response.data.results);
+        console.log('Movies retrieved successfully!');
+      })
+      .catch(error => {
+        console.error('There was an error retrieving the movies!', error);
+        console.log('Error retrieving movies.');
+      });
+    }
+  }, [Idioma, Genero, Titulo])
 
   return (
-    <FiltroContext.Provider value={{ Idioma, Genero, Filmes, filterIdioma, filterGenero}}>
+    <FiltroContext.Provider value={{ Idioma, Genero, Titulo, Filmes, filterIdioma, filterGenero, filterTitulo}}>
       {children}
     </FiltroContext.Provider>
   );
