@@ -3,26 +3,17 @@ import { URL_BACK } from '@/services/api'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { FaHeart, FaRegHeart } from 'react-icons/fa'
+import { FavButtonProps } from '@/types'
 
-
-interface FBProps {
-  movieId: number,
-  title: string,
-  voteAverage: number,
-  releaseDate: string,
-  originalLanguage: string,
-  posterPath: any
-}
 
 export default function FavButton({
   movieId,
   title,
   voteAverage,
-  releaseDate,
   originalLanguage,
   posterPath
-}: FBProps) {
-  const { Email, Favoritos } = useUser();
+}: FavButtonProps) {
+  const { Email, Favoritos } = useUser()
 
   const [favFilmes, setFavFilmes] = useState<any[]>([])
 
@@ -42,7 +33,6 @@ export default function FavButton({
         movie_id: movieId,
         title: title,
         vote_average: voteAverage,
-        release_date: releaseDate,
         original_language: originalLanguage,
         poster_path: posterPath
       })
@@ -55,15 +45,15 @@ export default function FavButton({
 
   if (favFilmes && favFilmes.some(fav => (fav.title == title))) {
     return (
-      <button className='bg-transparent' onClick={() => addFav()}>
-        <FaHeart className='fill-red-500' />
+      <button className='bg-transparent' >
+        <FaHeart className='fill-red-500' onClick={ () => addFav() }/>
       </button>
     )
 
   } else {
     return (
-      <button className='bg-transparent' onClick={addFav}>
-        <FaRegHeart className='fill-red-500' />
+      <button className='bg-transparent' >
+        <FaRegHeart className='fill-red-500' onClick={ () => addFav() }/>
       </button>
     )
   }

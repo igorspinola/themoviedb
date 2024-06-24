@@ -1,5 +1,5 @@
 #movie-language {
-  @apply hidden backdrop-blur-sm bg-gradient-to-bl from-slate-300/30 to-slate-400/30 shadow-lg rounded-2xl list-none grid-cols-4 mt-[1rem] ml-[30rem] w-max h-[3rem] px-[5rem] pt-[0.75rem] gap-[5rem];
+  @apply hidden backdrop-blur-sm bg-gradient-to-bl from-slate-300/30 to-slate-400/30 shadow-lg rounded-2xl list-none grid-cols-4 mt-[1rem]  w-max h-[3rem] px-[5rem] pt-[0.75rem] gap-[5rem];
 
   @media (min-width: 1024px) {
     display: grid;

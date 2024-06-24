@@ -1,5 +1,5 @@
 #movie-gender {
-  @apply hidden fixed top-[10rem] left-4 h-fit backdrop-blur-sm bg-gradient-to-bl from-slate-300/30 to-slate-400/30 shadow-lg rounded-2xl list-none grid-rows-4 w-24 py-10 px-3 gap-[1rem];
+  @apply hidden fixed top-[11rem] left-4 h-fit backdrop-blur-sm bg-gradient-to-bl from-slate-300/30 to-slate-400/30 shadow-lg rounded-2xl list-none grid-rows-4 w-24 py-10 px-3 gap-[1rem];
 
   @media (min-width: 1024px) {
     display: grid;

@@ -3,7 +3,8 @@ import { Request, Response } from "express"
 import cors from "cors"
 import axios from 'axios'
 
-
+const API_URL = `https://api.themoviedb.org/3`
+const API_KEY = `04c35731a5ee918f014970082a0088b1`
 const prisma = new PrismaClient()
 
 const express = require('express')
@@ -19,7 +20,7 @@ app.get('/test', (req: Request, res: Response) => {
 
 app.get('/movie_list', async (req: Request, res: Response) => {
 
-  const list = await axios.get('https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=04c35731a5ee918f014970082a0088b1&page=1')
+  const list = await axios.get(`${API_URL}/discover/movie?sort_by=popularity.desc&api_key=${API_KEY}&page=1`)
   console.log(list)
   res.send(list.data)
 })
@@ -29,7 +30,7 @@ app.get('/movie_by_genre', async (req: Request, res: Response) => {
   const language = req.query.language
   console.log(genre)
   console.log(language)
-  const url = `https://api.themoviedb.org/3/discover/movie?api_key=04c35731a5ee918f014970082a0088b1&with_original_language=${language}&with_genres=${genre}`
+  const url = `${API_URL}/discover/movie?api_key=${API_KEY}&with_original_language=${language}&with_genres=${genre}`
   const list = await axios.get(url)
   res.send(list.data)
 })
@@ -39,7 +40,7 @@ app.get('/movie_by_title', async (req: Request, res: Response) => {
   const title_string = String(req.query.title)
   const title = title_string.split(" ").join("+")
   console.log(title)
-  const url = `https://api.themoviedb.org/3/search/movie?&api_key=04c35731a5ee918f014970082a0088b1&query=${title}`
+  const url = `${API_URL}/search/movie?&api_key=${API_KEY}&query=${title}&with_original_languages=es|fr|it|de`
   console.log(url)
   const list = await axios.get(url)
   res.send(list.data)
@@ -116,7 +117,7 @@ app.post('/login', async (req: Request, res: Response) => {
 app.post('/add_favorite', async (req: Request, res: Response) => {
 
   console.log(req.body)
-  const { email, movie_id, title, vote_average, release_date, original_language, poster_path } = req.body
+  const { email, movie_id, title, vote_average, original_language, poster_path } = req.body
 
   const findUser = await prisma.user.findUnique({
     where: {
